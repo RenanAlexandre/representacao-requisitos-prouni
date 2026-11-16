@@ -1,0 +1,111 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-white text-slate-800 antialiased;
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgb(203 213 225);
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(148 163 184);
+    background-clip: content-box;
+  }
+}
+
+@layer components {
+  .no-scroll-bar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scroll-bar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* --------------------------------------------------------------------
+   * GenDocs — a plataforma original usa Tailwind v4. Estas duas regras
+   * cobrem utilitários que não existem no v3 (`outline-1` em <tr> com
+   * border-separate) e mantêm a linha da tabela idêntica ao original.
+   * ------------------------------------------------------------------ */
+  .gd-row {
+    outline: 1px solid theme('colors.gray.200');
+    border-radius: 0.75rem;
+    transition: all 0.15s ease;
+  }
+  .gd-row:hover {
+    box-shadow: 0 6px 16px -4px rgba(0, 0, 0, 0.14);
+  }
+
+
+  /* --------------------------------------------------------------------
+   * ERP — linha de tabela do original:
+   * `rounded-xl shadow-table-row outline outline-1 outline-gray-200`.
+   * ------------------------------------------------------------------ */
+  .erp-row {
+    outline: 1px solid theme('colors.gray.200');
+    border-radius: 0.75rem;
+    background-color: #fff;
+    box-shadow: 0px 4px 8px 0px #0000002a;
+    transition: all 0.15s ease;
+  }
+  .erp-row:hover {
+    box-shadow: 0px 8px 18px 0px #0000002a;
+  }
+
+  /* Tabela do GenDocs: linhas separadas com respiro vertical. */
+  .gd-table {
+    width: 100%;
+    caption-side: bottom;
+    border-collapse: separate;
+    border-spacing: 0 1rem;
+  }
+}
+
+/* --------------------------------------------------------------------
+ * Impressão — é assim que sai o PDF do contrato.
+ *
+ * A tela tem barra de navegação, botões e sombras que no papel viram lixo.
+ * `print:hidden` marca caso a caso o que não deve sair; aqui ficam só as
+ * regras gerais do documento.
+ * ------------------------------------------------------------------ */
+@media print {
+  body {
+    background: #fff;
+  }
+  /* Cláusula cortada ao meio entre duas páginas é ruim de ler e pior de
+     conferir. */
+  h1, h2, h3 {
+    break-after: avoid-page;
+  }
+  li {
+    break-inside: avoid-page;
+  }
+  .sem-impressao {
+    display: none !important;
+  }
+}

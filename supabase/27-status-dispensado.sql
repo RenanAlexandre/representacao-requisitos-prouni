@@ -1,0 +1,22 @@
+-- ============================================================================
+-- 27 — "Dispensado" entra em status_candidato
+--
+-- Rode depois do 26. RODE ESTE ARQUIVO SOZINHO, antes do 28.
+--
+-- POR QUE ELE É UM ARQUIVO DE UMA LINHA
+-- -------------------------------------
+-- `alter type ... add value` grava o rótulo novo, mas o Postgres proíbe USAR
+-- esse rótulo na mesma transação em que ele foi criado ("unsafe use of new
+-- value of enum type"). Como o cliente daqui manda o arquivo inteiro numa
+-- transação implícita, juntar isto ao 28 — que compara e grava 'Dispensado' —
+-- faria a migração inteira falhar.
+--
+-- POR QUE NÃO REAPROVEITAR 'Desistente'
+-- -------------------------------------
+-- São atos de partes diferentes. Desistente é o candidato que sai por conta
+-- própria; dispensado é a Secretaria que decide não matriculá-lo. Guardar os
+-- dois no mesmo rótulo perderia justamente a informação que a tela quer
+-- registrar.
+-- ============================================================================
+
+alter type status_candidato add value if not exists 'Dispensado';
